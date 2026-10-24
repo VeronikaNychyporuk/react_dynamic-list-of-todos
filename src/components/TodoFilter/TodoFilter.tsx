@@ -10,6 +10,27 @@ export const TodoFilter = React.memo(
     const [query, setQuery] = useState('');
     const [filter, setFilter] = useState('all');
 
+    const handleStatusChange = (
+      event: React.ChangeEvent<HTMLSelectElement>
+    ) => {
+      const value = event.target.value;
+
+      setFilter(value);
+      onFilterChange(value);
+    };
+
+    const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
+
+      setQuery(value);
+      onQueryChange(value);
+    };
+
+    const handleClearQueryClick = () => {
+      setQuery('');
+      onQueryChange('');
+    };
+
     return (
       <form className="field has-addons">
         <p className="control">
@@ -17,12 +38,7 @@ export const TodoFilter = React.memo(
             <select
               data-cy="statusSelect"
               value={filter}
-              onChange={event => {
-                const value = event.target.value;
-
-                setFilter(value);
-                onFilterChange(value);
-              }}
+              onChange={handleStatusChange}
             >
               <option value="all">All</option>
               <option value="active">Active</option>
@@ -38,12 +54,7 @@ export const TodoFilter = React.memo(
             value={query}
             className="input"
             placeholder="Search..."
-            onChange={event => {
-              const value = event.target.value;
-
-              setQuery(value);
-              onQueryChange(value);
-            }}
+            onChange={handleQueryChange}
           />
           <span className="icon is-left">
             <i className="fas fa-magnifying-glass" />
@@ -56,10 +67,7 @@ export const TodoFilter = React.memo(
                 data-cy="clearSearchButton"
                 type="button"
                 className="delete"
-                onClick={() => {
-                  setQuery('');
-                  onQueryChange('');
-                }}
+                onClick={handleClearQueryClick}
               />
             </span>
           )}
